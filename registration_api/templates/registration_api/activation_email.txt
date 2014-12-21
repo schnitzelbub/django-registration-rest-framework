@@ -1,0 +1,10 @@
+{% load i18n %}
+{% url 'registration_activate' activation_key as a_url %}{{ a_url }}
+{% blocktrans with site=site key=activation_key expire=expiration_days activate_url=a_url %}
+Your activation link is below, click or copy to your browser to activate your account:
+
+http://{{site}}{{ activate_url }}
+
+
+The Link is active for the next {{ expire }} days.
+{% endblocktrans %}

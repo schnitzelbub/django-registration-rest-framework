@@ -49,6 +49,7 @@ urls.py
     urlpatterns = patterns(
     ...
     url(r'^accounts_api/', include('registration_api.urls')),
+    url(r'^activate/', include('registration_api.activate_urls')),
     ...
     )
 
