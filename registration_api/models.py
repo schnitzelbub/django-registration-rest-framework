@@ -44,4 +44,4 @@ class RegistrationProfile(models.Model):
         expiration_date = datetime.timedelta(
             days=utils.get_settings('REGISTRATION_API_ACCOUNT_ACTIVATION_DAYS'))
         return self.activation_key == self.ACTIVATED or \
-            (self.user.date_joined + expiration_date <= datetime_now())
+            (getattr(self.user, utils.get_settings('REGISTRATION_API_USER_REGISTER_DATE_FIELD')) + expiration_date <= datetime_now())
