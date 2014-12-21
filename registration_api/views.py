@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.http import HttpResponseRedirect
+
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -17,20 +19,28 @@ VALID_USER_FIELDS = utils.get_valid_user_fields()
 def register(request):
     serialized = {}
     user_data = {}
-    if request.META['CONTENT_TYPE'] == 'application/json':
+    if request.META['CONTENT_TYPE'].startswith('application/json'):
         serialized = UserSerializer(data=request.DATA)
         if serialized.is_valid():
             user_data = request.DATA
-    elif request.META['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
+    elif request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
         serialized = UserSerializer(data=request.POST)
         if serialized.is_valid():
             user_data = utils.get_user_data(request.POST)
-    if serialized.is_valid():
-        utils.create_inactive_user(**user_data)
+
+    print user_data
+    if user_data:
+        create_user_data = {}
+        for mapping in settings.REGISTRATION_API_USER_DATA_MAPPING:
+             create_user_data[mapping] = user_data.get(mapping, '')
+        utils.create_inactive_user(**create_user_data)
         return Response(utils.USER_CREATED_RESPONSE_DATA,
                         status=status.HTTP_201_CREATED)
     else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+        error = ''
+        if isinstance(serialized, UserSerializer):
+            error = serialized._errors
+        return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 
 def activate(request, activation_key=None):

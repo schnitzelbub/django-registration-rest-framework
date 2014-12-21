@@ -55,12 +55,11 @@ def get_user_data(data):
 
 
 @atomic_decorator
-def create_inactive_user(username=None, email=None, password=None):
+def create_inactive_user(**kwargs):
     user_model = get_user_model()
-    if username is not None:
-        new_user = user_model.objects.create_user(username, email, password)
-    else:
-        new_user = user_model.objects.create_user(email=email, password=password)
+
+    new_user = user_model.objects.create_user(**kwargs) 
+
     new_user.is_active = False
     new_user.save()
     create_profile(new_user)
