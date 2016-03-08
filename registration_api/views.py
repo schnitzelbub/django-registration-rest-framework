@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+
+
 from django.conf import settings
+from django.db.utils import IntegrityError
 from django.http import HttpResponseRedirect
 
 from rest_framework import status
@@ -40,9 +43,13 @@ def register(request):
         create_user_data = {}
         for mapping in settings.REGISTRATION_API_USER_DATA_MAPPING:
              create_user_data[mapping] = user_data.get(mapping, '')
-        utils.create_inactive_user(**create_user_data)
-        return Response(utils.USER_CREATED_RESPONSE_DATA,
-                        status=status.HTTP_201_CREATED)
+        try:
+            utils.create_inactive_user(**create_user_data)
+        except IntegrityError:
+            return Response({'error': 'user failed to create'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(utils.USER_CREATED_RESPONSE_DATA,
+                            status=status.HTTP_201_CREATED)
     else:
         error = ''
         if isinstance(serialized, serializer):
