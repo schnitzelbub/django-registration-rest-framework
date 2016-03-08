@@ -38,8 +38,11 @@ settings.py
 
     # This setting is mandatory
     REGISTRATION_API_ACTIVATION_SUCCESS_URL = '/'
-
     REGISTRATION_API_USER_DATA_MAPPING = ('email', 'first_name', 'last_name', 'password')
+    REGISTRATION_API_USER_REGISTER_DATE_FIELD = 'created'
+
+    REGISTRATION_API_USER_SERIALIZER = 'registration_api.serializers.UserSerializer'
+
 
 urls.py
 -------

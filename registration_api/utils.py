@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import random
 import re
@@ -12,6 +13,8 @@ from .models import RegistrationProfile
 
 from django.db import transaction
 # django 1.6, 1.5 and 1.4 supports
+from importlib import import_module
+
 try:
     atomic_decorator = transaction.atomic
 except AttributeError:
@@ -41,6 +44,15 @@ def get_valid_user_fields():
     for f in get_user_model()._meta.fields:
         fields.append(f.name)
     return fields
+
+
+def get_serializer(s):
+    package, module = s.rsplit('.', 1)
+
+    pack = import_module(package)
+    imp = getattr(pack, module)
+
+    return imp
 
 
 VALID_USER_FIELDS = get_valid_user_fields()

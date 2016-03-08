@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.http import HttpResponseRedirect
-
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -19,16 +19,20 @@ VALID_USER_FIELDS = utils.get_valid_user_fields()
 def register(request):
     serialized = {}
     user_data = {}
+    if hasattr(settings, 'REGISTRATION_API_USER_SERIALIZER'):
+        serializer = utils.get_serializer(settings.REGISTRATION_API_USER_SERIALIZER)
+    else:
+        serializer = UserSerializer
+
     if request.META['CONTENT_TYPE'].startswith('application/json'):
-        serialized = UserSerializer(data=request.DATA)
+        serialized = serializer(data=request.DATA)
         if serialized.is_valid():
             user_data = request.DATA
     elif request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
-        serialized = UserSerializer(data=request.POST)
+        serialized = serializer(data=request.POST)
         if serialized.is_valid():
             user_data = utils.get_user_data(request.POST)
 
-    print user_data
     if user_data:
         create_user_data = {}
         for mapping in settings.REGISTRATION_API_USER_DATA_MAPPING:
@@ -38,7 +42,7 @@ def register(request):
                         status=status.HTTP_201_CREATED)
     else:
         error = ''
-        if isinstance(serialized, UserSerializer):
+        if isinstance(serialized, serializer):
             error = serialized._errors
         return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
