@@ -19,17 +19,20 @@ VALID_USER_FIELDS = utils.get_valid_user_fields()
 def register(request):
     serialized = {}
     user_data = {}
+
     if hasattr(settings, 'REGISTRATION_API_USER_SERIALIZER'):
         serializer = utils.get_serializer(settings.REGISTRATION_API_USER_SERIALIZER)
     else:
         serializer = UserSerializer
 
-    if request.META['CONTENT_TYPE'].startswith('application/json'):
-        serialized = serializer(data=request.DATA)
+    if 'CONTENT_TYPE' not in request.META or \
+            ('CONTENT_TYPE' in request.META and request.META['CONTENT_TYPE'].startswith('application/json')):
+        serialized = UserSerializer(data=request.DATA)
         if serialized.is_valid():
             user_data = request.DATA
-    elif request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
-        serialized = serializer(data=request.POST)
+    elif 'CONTENT_TYPE' in request.META and \
+            request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
+        serialized = UserSerializer(data=request.POST)
         if serialized.is_valid():
             user_data = utils.get_user_data(request.POST)
 
