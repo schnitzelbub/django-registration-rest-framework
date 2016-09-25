@@ -1,3 +1,4 @@
+from collections import ChainMap
 from urllib import urlencode
 import mock
 
@@ -10,7 +11,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from django.test import TestCase
 from django.test.utils import override_settings
-from django.utils.datastructures import MergeDict
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -32,7 +32,7 @@ class WsgiHttpRequest(HttpRequest):
 
     def _get_request(self):
         if not hasattr(self, '_request'):
-            self._request = MergeDict(self.POST, self.GET)
+            self._request = ChainMap(self.POST, self.GET)
         return self._request
     REQUEST = property(_get_request)
 
