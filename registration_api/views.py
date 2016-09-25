@@ -10,15 +10,14 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-import utils
-from serializers import UserSerializer
-
+from . import utils
+from .serializers import UserSerializer
 
 VALID_USER_FIELDS = utils.get_valid_user_fields()
 
 
 @api_view(['POST'])
-@permission_classes((AllowAny, ))
+@permission_classes((AllowAny,))
 def register(request):
     serialized = {}
     user_data = {}
@@ -42,7 +41,7 @@ def register(request):
     if user_data:
         create_user_data = {}
         for mapping in settings.REGISTRATION_API_USER_DATA_MAPPING:
-             create_user_data[mapping] = user_data.get(mapping, '')
+            create_user_data[mapping] = user_data.get(mapping, '')
         try:
             utils.create_inactive_user(**create_user_data)
         except IntegrityError:
