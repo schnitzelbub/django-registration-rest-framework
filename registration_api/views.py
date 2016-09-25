@@ -34,7 +34,7 @@ def register(request):
             user_data = request.DATA
     elif 'CONTENT_TYPE' in request.META and \
             request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
-        serialized = UserSerializer(data=request.POST)
+        serialized = UserSerializer(data=request.POST)  # TODO change to data?
         if serialized.is_valid():
             user_data = utils.get_user_data(request.POST)
 

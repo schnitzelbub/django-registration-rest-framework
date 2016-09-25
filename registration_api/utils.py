@@ -20,7 +20,6 @@ try:
 except AttributeError:
     atomic_decorator = transaction.commit_on_success
 
-
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 DEFAULT_SETTINGS = {
     'REGISTRATION_API_ACCOUNT_ACTIVATION_DAYS': 7,
@@ -36,7 +35,7 @@ def get_settings(key):
 
 USER_CREATED_RESPONSE_DATA = {
     'activation_days': get_settings('REGISTRATION_API_ACCOUNT_ACTIVATION_DAYS')
-    }
+}
 
 
 def get_valid_user_fields():
@@ -70,7 +69,7 @@ def get_user_data(data):
 def create_inactive_user(**kwargs):
     user_model = get_user_model()
 
-    new_user = user_model.objects.create_user(**kwargs) 
+    new_user = user_model.objects.create_user(**kwargs)
 
     new_user.is_active = False
     new_user.save()
