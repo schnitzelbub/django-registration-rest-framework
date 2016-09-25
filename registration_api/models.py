@@ -39,7 +39,7 @@ class RegistrationProfile(models.Model):
         """
 
         # utils imported here to avoid circular import
-        import utils
+        from . import utils
 
         expiration_date = datetime.timedelta(
             days=utils.get_settings('REGISTRATION_API_ACCOUNT_ACTIVATION_DAYS'))
