@@ -26,9 +26,9 @@ def register(request):
 
     if 'CONTENT_TYPE' not in request.META or \
             ('CONTENT_TYPE' in request.META and request.META['CONTENT_TYPE'].startswith('application/json')):
-        serialized = UserSerializer(data=request.DATA)
+        serialized = UserSerializer(data=request.data)
         if serialized.is_valid():
-            user_data = request.DATA
+            user_data = request.data
     elif 'CONTENT_TYPE' in request.META and \
             request.META['CONTENT_TYPE'].startswith('application/x-www-form-urlencoded'):
         serialized = UserSerializer(data=request.POST)  # TODO change to data?
