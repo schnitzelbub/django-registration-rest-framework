@@ -12,13 +12,13 @@ setup(name='django-registration-rest-framework',
       install_requires=['djangorestframework'],
       tests_require=[
           'mock==1.0.1',
-          'Django>=1.6',
+          'Django>=1.10',
       ],
       url='https://github.com/tucarga/django-registration-rest-framework',
       author='Alejandro Varas',
       author_email='alej0varas@gmail.com',
       keywords='django registration rest framework',
-      description=('Clone of Django Resgistration flow for Django Rest '
+      description=('Clone of Django Registration flow for Django Rest '
                    'Framework',),
       license='GPL',
       classifiers=[
