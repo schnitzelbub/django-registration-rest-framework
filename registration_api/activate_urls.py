@@ -1,9 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from registration_api.views import activate
 
-
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^(?P<activation_key>\w+)/$',
-        'registration_api.views.activate',
+        activate,
         name='registration_activate'),
-)
+]

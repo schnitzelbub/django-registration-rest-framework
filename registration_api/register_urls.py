@@ -1,9 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from registration_api.views import register
 
-
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$',
-        'registration_api.views.register',
+        register,
         name='registration_api_register'),
-)
+]
