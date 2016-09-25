@@ -38,7 +38,7 @@ settings.py
 
     # This setting is mandatory
     REGISTRATION_API_ACTIVATION_SUCCESS_URL = '/'
-    REGISTRATION_API_USER_DATA_MAPPING = ('email', 'first_name', 'last_name', 'password')
+    REGISTRATION_API_USER_DATA_MAPPING = ('email', 'first_name', 'last_name', 'password', 'username')
     REGISTRATION_API_USER_REGISTER_DATE_FIELD = 'created'
 
     REGISTRATION_API_USER_SERIALIZER = 'registration_api.serializers.UserSerializer'
@@ -49,12 +49,12 @@ urls.py
 
 .. code-block:: python
 
-    urlpatterns = patterns(
+    urlpatterns = [
     ...
     url(r'^accounts_api/', include('registration_api.urls')),
     url(r'^activate/', include('registration_api.activate_urls')),
     ...
-    )
+    ]
 
 Front-end
 ---------
@@ -64,7 +64,7 @@ something like
 
 .. code-block:: json
 
-  [{"username": "john", "email": "john@example.com", "password": "verylongpassword"}]
+  {"username": "john", "email": "john@example.com", "password": "verylongpassword"}
 
 This will trigger an email to the addess specified by the user. When
 the user follows the link the account is activated.
