@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from django.conf import settings
 from django.db.utils import IntegrityError
 from django.http import HttpResponseRedirect

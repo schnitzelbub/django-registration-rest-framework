@@ -14,7 +14,8 @@ class RegistrationProfile(models.Model):
     """
     ACTIVATED = u"ALREADY_ACTIVATED"
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, unique=True, verbose_name=_('user'), related_name='api_registration_profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, unique=True, verbose_name=_('user'),
+                                related_name='api_registration_profile')
     activation_key = models.CharField(_('activation key'), max_length=40)
 
     def activation_key_expired(self):
@@ -44,4 +45,5 @@ class RegistrationProfile(models.Model):
         expiration_date = datetime.timedelta(
             days=utils.get_settings('REGISTRATION_API_ACCOUNT_ACTIVATION_DAYS'))
         return self.activation_key == self.ACTIVATED or \
-            (getattr(self.user, utils.get_settings('REGISTRATION_API_USER_REGISTER_DATE_FIELD')) + expiration_date <= datetime_now())
+               (getattr(self.user, utils.get_settings(
+                   'REGISTRATION_API_USER_REGISTER_DATE_FIELD')) + expiration_date <= datetime_now())

@@ -4,7 +4,6 @@ from setuptools import find_packages
 
 from registration_api import __version__
 
-
 setup(name='django-registration-rest-framework',
       version=__version__,
       packages=find_packages(),
@@ -14,7 +13,7 @@ setup(name='django-registration-rest-framework',
       tests_require=[
           'mock==1.0.1',
           'Django>=1.6',
-          ],
+      ],
       url='https://github.com/tucarga/django-registration-rest-framework',
       author='Alejandro Varas',
       author_email='alej0varas@gmail.com',
@@ -32,5 +31,5 @@ setup(name='django-registration-rest-framework',
           ('License :: OSI Approved :: '
            'GNU General Public License v3 or later (GPLv3+)'),
           'Topic :: Software Development :: Libraries',
-          ],
+      ],
       )
