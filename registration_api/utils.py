@@ -4,20 +4,15 @@ import re
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
+# from django.contrib.sites.models import Site
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
 
 from .models import RegistrationProfile
 
-from django.db import transaction
+from django.db.transaction import atomic
 # django 1.6, 1.5 and 1.4 supports
 from importlib import import_module
-
-try:
-    atomic_decorator = transaction.atomic
-except AttributeError:
-    atomic_decorator = transaction.commit_on_success
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 DEFAULT_SETTINGS = {
@@ -64,7 +59,7 @@ def get_user_data(data):
     return user_data
 
 
-@atomic_decorator
+@atomic
 def create_inactive_user(**kwargs):
     user_model = get_user_model()
 
@@ -73,8 +68,10 @@ def create_inactive_user(**kwargs):
     new_user.is_active = False
     new_user.save()
     create_profile(new_user)
-    site = Site.objects.get_current()
-    send_activation_email(new_user, site)
+    # site = Site.objects.get_current()
+    # send_activation_email(new_user, site)
+    # TODO define SITE_URL instead of Django Site, as it will be a frontend link, not a direct link to API!
+    send_activation_email(new_user, "example.org")
     return new_user
 
 
